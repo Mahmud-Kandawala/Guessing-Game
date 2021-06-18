@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <title>My Guessing Game</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+<script>
+window.onload = function() 
+{
+
+
+//
+// JavaScript Guessing Game
+// Mahmud Kandawala
+// Date: 10/7/2020
+
+
+var randomNumber = Math.floor(Math.random() * 100) + 1; //generate number between 1-100
+
+var guess = document.getElementById("guess"); // display guess 
+var winGame = document.getElementById("winGame"); //display message when won
+var beforeResult = document.getElementById("beforeResult"); //display the previous gusses
+var lowOrHi = document.getElementById("lowOrHi"); // display/let the user know if their guess is low or high
+
+var guessSubmit = document.getElementById("guessSubmit");  // display/be able to submit the answer
+
+var guessArea = document.getElementById("guessArea"); // display/be able to input answer into the area and will be visible to the user
+
+var guessCount = 1; //user tries start with one
+
+
+function checkGuess()   // function will be used when their answer is submitted by the user
+{
+      var userGuess = Number(guessArea.value); // only numbers can be entered in field
+      guess.innerHTML += userGuess + " ";
+  
+
+  if(guessCount == 5)  // The amount of tries the user has
+  {
+      beforeResult.innerHTML = "GAME OVER!!! YOU LOSE!!!"; // displays if the user fails to get the number over five tries
+      setGameOver(); //starts over 
+  } 
+  
+  else  
+  {
+    
+    if(userGuess == randomNumber) // users guess is the random number
+    {
+      winGame.innerHTML = "Congratulations!!! You Got It Right!"; // displays if the user gets the right answer
+      beforeResult.innerHTML = "" //blank, will not show
+      lowOrHi.innerHTML = ""; //blank, will not show
+      setGameOver(); // starts over
+    } 
+    
+    else 
+    {
+      beforeResult.innerHTML = "Wrong!"; //displays when users submits the wrong answer
+       
+      
+      if(userGuess < randomNumber) // user answer is lower than random number, then...
+      { 
+      lowOrHi.innerHTML = "Your Guess Is Low!"; // lets the user know if their guess is low from the random number
+         
+      } 
+      else if(userGuess > randomNumber) // user answer is greater than random number, then...
+      { 
+      lowOrHi.innerHTML = "Your Guess Is High!"; //lets the user know if their guess is high from the random number
+         
+      }
+}
+
+    guessCount++;  //increment guess each time answer is submit
+    guessArea.value = ""; //blank, will not show
+   
+  }
+}
+
+ function setGameOver()  //when the game is won or lost
+ {  
+      guessArea.disabled = true; // disable the form
+      guessSubmit.disabled = true; // diable the button
+      resetButton = document.createElement('button'); //creates the start over button
+      resetButton.textContent = 'Start New Game'; // displays the button
+      document.body.appendChild(resetButton);
+      resetButton.addEventListener('click', resetGame); // clickable button will run restart button
+      }
+
+
+      function resetGame() // reset the game
+      {  // reset the game
+        guessCount = 1;
+        const reset = document.querySelectorAll('#reset p'); // will remove the content from the screen 
+        for(let i = 0 ; i < reset.length ; i++) 
+        {
+          reset[i].textContent = '';
+        }
+
+        resetButton.parentNode.removeChild(resetButton);
+        guessArea.disabled = false; //will not disable the guess area
+        guessSubmit.disabled = false; //will not disable the button
+        guessArea.value = '';
+        guessArea.focus();  //calls function
+        randomNumber = Math.floor(Math.random() * 100) + 1; //generate number between 1-100
+      }
+  
+
+     guessSubmit.onclick = checkGuess;  // when the submit button is clicked it will run the checkGuess function
+}
+
+</script>
+</head>
+<body>
+
+<br>
+
+<h2>Number Guessing Game</h2>  
+
+<br>
+<br>
+<br>
+  <p>WITH ONLY 5 TRIES, Pick a random number between 1-100. You will receive feedback based on your pick. Good Luck!</p>
+ <br>
+
+    <div class="form-inline" action="/action_page.php">
+  <label for="guessArea">Enter: </label>
+  <input type="text" id="guessArea" placeholder="Enter a number">
+  <button type="button" id="guessSubmit">Submit</button>
+</div>
+
+<div id="reset">
+<p id="guess"></p>
+<p id ="winGame"></p>
+<p id="beforeResult"></p>
+<p id="lowOrHi"></p>
+</div>
+
+</body>
+</html>
